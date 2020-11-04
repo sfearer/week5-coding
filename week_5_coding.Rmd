@@ -1,0 +1,53 @@
+---
+title: "Penguin size comparisons"
+author: "Sam Fearer"
+date: "11/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+library(ggbeeswarm)
+library(car)
+
+```
+
+
+# Part 1. T-tests
+
+Mass comparison: male and female chinstrap penguins
+
+```{r}
+chinstraps <- penguins %>% 
+  filter (species == "Chinstrap")
+
+# Histograms
+ggplot(data = chinstraps, aes(x = body_mass_g)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~sex)
+
+## QQ plot
+
+ggplot(data = chinstraps, aes(sample = body_mass_g)) +
+  geom_qq() +
+  facet_wrap(~sex)
+
+## Get descriptive statistics
+chinstraps %>% 
+  group_by(sex) %>% 
+  summarize(
+    mean_mass = mean(body_mass_g),
+    median_mass = median(body_mass_g),
+    sd_mass = sd(body_mass_g),
+    sample_size = n()
+  )
+
+```
+
+
+
+
+
